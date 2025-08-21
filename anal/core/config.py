@@ -52,7 +52,7 @@ class Settings(BaseSettings):
     APP_DESCRIPTION: str = Field(default="Built with ANAL Framework", description="Application description")
     
     # Database settings
-    DATABASE_URL: Optional[str] = Field(default=None, description="Primary database URL")
+    DATABASE_URL: str = Field(default="sqlite:///./app.db", description="Primary database URL")
     DATABASE_ECHO: bool = Field(default=False, description="Echo SQL queries")
     DATABASE_POOL_SIZE: int = Field(default=5, description="Database connection pool size")
     DATABASE_MAX_OVERFLOW: int = Field(default=10, description="Database max overflow connections")

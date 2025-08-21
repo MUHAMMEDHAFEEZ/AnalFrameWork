@@ -1,9 +1,10 @@
 Metadata-Version: 2.4
-Name: ANAL
+Name: anal-framework
 Version: 0.1.0
 Summary: Advanced Network Application Layer - A modern Python backend framework
 Author-email: ANAL Framework Team <team@analframework.org>
 Maintainer-email: ANAL Framework Team <team@analframework.org>
+License-Expression: MIT
 Project-URL: Homepage, https://github.com/analframework/anal
 Project-URL: Documentation, https://docs.analframework.org
 Project-URL: Repository, https://github.com/analframework/anal
@@ -12,7 +13,6 @@ Project-URL: Changelog, https://github.com/analframework/anal/blob/main/CHANGELO
 Keywords: web,framework,backend,api,async,orm,rest,graphql
 Classifier: Development Status :: 3 - Alpha
 Classifier: Intended Audience :: Developers
-Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.12
@@ -23,6 +23,7 @@ Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
 Classifier: Topic :: Software Development :: Libraries :: Python Modules
 Requires-Python: >=3.12
 Description-Content-Type: text/markdown
+License-File: LICENSE
 Requires-Dist: uvicorn[standard]>=0.24.0
 Requires-Dist: starlette>=0.32.0
 Requires-Dist: pydantic>=2.5.0
@@ -75,10 +76,11 @@ Provides-Extra: mongodb
 Requires-Dist: motor>=3.3.0; extra == "mongodb"
 Provides-Extra: all
 Requires-Dist: ANAL[dev,docs,mongodb,mysql,postgres]; extra == "all"
+Dynamic: license-file
 
 # ANAL Framework
 
-[![PyPI version](https://badge.fury.io/py/ANAL.svg)](https://badge.fury.io/py/ANAL)
+[![PyPI version](https://badge.fury.io/py/anal-framework.svg)](https://badge.fury.io/py/anal-framework)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://github.com/analframework/anal/workflows/Tests/badge.svg)](https://github.com/analframework/anal/actions)
@@ -91,7 +93,7 @@ Requires-Dist: ANAL[dev,docs,mongodb,mysql,postgres]; extra == "all"
 ### Installation
 
 ```bash
-pip install ANAL
+pip install anal-framework
 ```
 
 ### Create Your First Project
