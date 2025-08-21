@@ -22,7 +22,7 @@ from anal.http.responses import JsonResponse, TemplateResponse
 from anal.http.routing import route, Router
 from anal.http.middleware import Middleware
 from anal.db.models import Model
-from anal.db.fields import *
+from anal.db import fields
 from anal.auth.decorators import login_required, permission_required
 
 # Make commonly used classes available at package level

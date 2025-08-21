@@ -6,10 +6,11 @@ environment variables, settings files, and runtime configuration.
 """
 
 import os
+import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings
 
 
@@ -175,6 +176,34 @@ class Settings(BaseSettings):
     # Custom settings
     CUSTOM_SETTINGS: Dict[str, Any] = Field(default_factory=dict, description="Custom application settings")
     
+    @field_validator('CORS_ORIGINS', 'CORS_METHODS', 'CORS_HEADERS', mode='before')
+    @classmethod
+    def parse_cors_list(cls, v):
+        """Parse CORS lists from string or keep as list."""
+        if isinstance(v, str):
+            if v.startswith('[') and v.endswith(']'):
+                try:
+                    return json.loads(v)
+                except json.JSONDecodeError:
+                    pass
+            # Handle comma-separated values
+            return [item.strip() for item in v.split(',') if item.strip()]
+        return v
+    
+    @field_validator('INSTALLED_APPS', 'MIDDLEWARE', mode='before')
+    @classmethod
+    def parse_app_list(cls, v):
+        """Parse app/middleware lists from string or keep as list."""
+        if isinstance(v, str):
+            if v.startswith('[') and v.endswith(']'):
+                try:
+                    return json.loads(v)
+                except json.JSONDecodeError:
+                    pass
+            # Handle comma-separated values
+            return [item.strip() for item in v.split(',') if item.strip()]
+        return v
+    
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
@@ -278,13 +307,16 @@ class Settings(BaseSettings):
         return f"<Settings(debug={self.DEBUG}, apps={len(self.INSTALLED_APPS)})>"
 
 
-# Global settings instance
-settings = Settings()
+# Global settings instance (lazy initialization)
+_settings = None
 
 
 def get_settings() -> Settings:
     """Get the global settings instance."""
-    return settings
+    global _settings
+    if _settings is None:
+        _settings = Settings()
+    return _settings
 
 
 def configure(settings_module: Optional[str] = None, **kwargs) -> Settings:
@@ -298,7 +330,7 @@ def configure(settings_module: Optional[str] = None, **kwargs) -> Settings:
     Returns:
         Configured settings instance
     """
-    global settings
+    global _settings
     
     if settings_module:
         # Import and apply settings from module
@@ -315,5 +347,12 @@ def configure(settings_module: Optional[str] = None, **kwargs) -> Settings:
         kwargs.update(module_settings)
     
     # Create new settings instance with overrides
-    settings = Settings(**kwargs)
-    return settings
+    _settings = Settings(**kwargs)
+    return _settings
+
+
+# Module-level settings access for backward compatibility
+def __getattr__(name):
+    if name == 'settings':
+        return get_settings()
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")

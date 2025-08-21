@@ -26,8 +26,7 @@ from anal.core.exceptions import ANALException
 from anal.core.registry import AppRegistry
 from anal.http.middleware import MiddlewareStack
 from anal.http.routing import Router
-from anal.db.connection import DatabaseManager
-from anal.security.auth import AuthenticationManager
+from anal.db.connection import get_database, connect_database, disconnect_database
 
 
 logger = logging.getLogger(__name__)
@@ -89,8 +88,7 @@ class ANAL:
         self.app_registry = AppRegistry()
         
         # Framework managers
-        self.db_manager: Optional[DatabaseManager] = None
-        self.auth_manager: Optional[AuthenticationManager] = None
+        self.db = None
         
         # Internal state
         self._started = False
@@ -115,14 +113,10 @@ class ANAL:
         self.container.register("event_bus", self.event_bus, singleton=True)
         self.container.register("router", self.router, singleton=True)
         
-        # Initialize database manager if configured
+        # Initialize database if configured
         if self.settings.DATABASE_URL:
-            self.db_manager = DatabaseManager(self.settings)
-            self.container.register("db", self.db_manager, singleton=True)
-            
-        # Initialize auth manager
-        self.auth_manager = AuthenticationManager(self.settings)
-        self.container.register("auth", self.auth_manager, singleton=True)
+            self.db = get_database()
+            self.container.register("db", self.db, singleton=True)
     
     def _setup_default_middleware(self) -> None:
         """Setup default middleware stack."""

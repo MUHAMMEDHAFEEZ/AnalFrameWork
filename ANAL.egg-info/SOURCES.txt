@@ -1,0 +1,9 @@
+README.md
+pyproject.toml
+ANAL.egg-info/PKG-INFO
+ANAL.egg-info/SOURCES.txt
+ANAL.egg-info/dependency_links.txt
+ANAL.egg-info/entry_points.txt
+ANAL.egg-info/requires.txt
+ANAL.egg-info/top_level.txt
+anal/__init__.py

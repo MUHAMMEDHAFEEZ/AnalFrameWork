@@ -159,7 +159,7 @@ async def app(scope, receive, send):
         ],
     })
     
-    html_content = """
+    html_content = b"""
     <!DOCTYPE html>
     <html>
     <head>
@@ -173,15 +173,15 @@ async def app(scope, receive, send):
     </head>
     <body>
         <div class="container">
-            <h1>ANAL Framework</h1>
+            <h1>🚀 ANAL Framework</h1>
             <div class="status">
-                <strong>Server is running successfully!</strong><br>
+                <strong>✅ Server is running successfully!</strong><br>
                 Your ANAL framework installation is working correctly.
             </div>
         </div>
     </body>
     </html>
-    """.encode('utf-8')
+    """
     
     await send({
         'type': 'http.response.body',
@@ -191,28 +191,13 @@ async def app(scope, receive, send):
     
     # Write demo app
     demo_file = Path("demo_app.py")
-    demo_file.write_text(demo_content, encoding='utf-8')
+    demo_file.write_text(demo_content)
     
     console.print(f"[green]✓ Created demo application: {demo_file}[/green]")
     console.print(f"[green]🚀 Starting demo server on http://{host}:{port}[/green]")
     
     try:
         import uvicorn
-        import sys
-        
-        # Ensure current directory is in Python path
-        current_dir = str(Path.cwd())
-        if current_dir not in sys.path:
-            sys.path.insert(0, current_dir)
-        
-        # Test import before running uvicorn
-        try:
-            import demo_app
-            console.print("[blue]Demo app imported successfully[/blue]")
-        except ImportError as e:
-            console.print(f"[red]Could not import demo_app: {e}[/red]")
-            return
-        
         uvicorn.run("demo_app:app", host=host, port=port, access_log=True)
     except ImportError:
         console.print("[red]Uvicorn not available. Please install with: pip install uvicorn[/red]")

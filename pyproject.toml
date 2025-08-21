@@ -92,7 +92,7 @@ Repository = "https://github.com/analframework/anal"
 Changelog = "https://github.com/analframework/anal/blob/main/CHANGELOG.md"
 
 [project.scripts]
-anal-admin = "anal.cli.main:main"
+anal-admin = "anal.cli.__main__:main"
 
 [tool.setuptools]
 packages = ["anal"]
